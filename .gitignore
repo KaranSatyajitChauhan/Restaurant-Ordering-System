@@ -1,0 +1,37 @@
+# Build artifacts
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.nuget.cache
+*.nuget.props
+*.nuget.dgspec.json
+*.psmdcp
+project.lock.json
+
+# Visual Studio-specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Environment variables & secrets
+appsettings.json
+appsettings.Development.json
+secrets.json
+~/.microsoft/usersecrets/
+
+# Logs & temporary files
+*.log
+logs/
+logs/*
+*.tmp
+*.cache
+*.pid
+*.swp
+
+# User-specific files
+*.ide
+*.sln.iml
