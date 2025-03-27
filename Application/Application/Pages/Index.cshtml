@@ -1,10 +1,293 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Restaurant Ordering System";
+    ViewData["Title"] = "K G Restaurant - Menu";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="menu-page">
+    <!-- Track Order Button -->
+    <div class="track-order-btn-container">
+        <a href="/TrackOrder" class="track-order-btn">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Track Order</span>
+        </a>
+    </div>
+
+    <div class="menu-content">
+        <!-- Category Navigation -->
+        <div class="category-nav">
+            <button class="category-btn active" data-category="All">
+                <i class="fas fa-list"></i>
+                <span>All</span>
+            </button>
+            @foreach (var category in Model.Categories)
+            {
+                <button class="category-btn" data-category="@category.Name">
+                    <i class="fas @category.Icon"></i>
+                    <span>@category.Name</span>
+                </button>
+            }
+        </div>
+
+        <!-- Menu Items Grid -->
+        <div class="menu-grid">
+            @foreach (var item in Model.MenuItems)
+            {
+                <div class="menu-card" data-category="@item.Category">
+                    <div class="square-image-container">
+                        <img src="@Url.Content(item.ImageUrl ?? "/images/placeholder.jpg")"
+                             alt="@item.Name"
+                             class="square-image"
+                             onerror="this.onerror=null;this.src='/images/placeholder.jpg'">
+                        @if (item.IsVegetarian)
+                        {
+                            <span class="veg-indicator">VEG</span>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h3>@item.Name</h3>
+                        <p class="item-desc">@item.Description</p>
+                        <div class="card-footer">
+                            <span class="price">$@item.Price.ToString("0.00")</span>
+                            <button class="add-btn">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+@section Styles {
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --error: #d63031;
+        }
+
+        /* Track Order Button */
+        .track-order-btn-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .track-order-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: var(--light);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+            transition: all 0.3s ease;
+        }
+
+            .track-order-btn:hover {
+                background: var(--accent);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(253, 121, 168, 0.4);
+            }
+
+        /* Main Content */
+        .menu-content {
+            padding-top: 70px;
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scrollbar-width: none;
+        }
+
+            .category-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 50px;
+            color: var(--light);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+            .category-btn:hover, .category-btn.active {
+                background: var(--primary);
+                transform: translateY(-2px);
+            }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .menu-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+        /* Square Image Container */
+        .square-image-container {
+            width: 100%;
+            aspect-ratio: 1/1;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .square-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-card:hover .square-image {
+            transform: scale(1.05);
+        }
+
+        /* Vegetarian Indicator */
+        .veg-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--success);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Card Body */
+        .card-body {
+            padding: 1.25rem;
+        }
+
+            .card-body h3 {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.25rem;
+            }
+
+        .item-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin: 0 0 1rem 0;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .add-btn:hover {
+                background: var(--accent);
+                transform: scale(1.05);
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .track-order-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .menu-content {
+                padding-top: 60px;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const menuItems = document.querySelectorAll('.menu-card');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active state
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Filter items
+                    const category = this.getAttribute('data-category');
+                    menuItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        if (category === 'All' || itemCategory === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Show all items by default
+            if (categoryButtons.length > 0) {
+                document.querySelector('.category-btn[data-category="All"]').click();
+            }
+        });
+    </script>
+}

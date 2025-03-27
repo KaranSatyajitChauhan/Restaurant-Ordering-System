@@ -25,9 +25,10 @@ namespace Week_6_Class_2_DW4.Pages
         {
         }
 
-        public async Task<IActionResult> OnPost()
+        public IActionResult OnPost()
         {
-            try
+            return RedirectToPage("/Index");
+            /*try
             {
                 var requestBody = new LoginRequest(Email, Password);
                 var json = JsonConvert.SerializeObject(requestBody);
@@ -53,7 +54,7 @@ namespace Week_6_Class_2_DW4.Pages
             {
                 ErrorMessage = $"Error on call the API: {ex.Message}";
                 return Page();
-            }
+            }*/
         }
     }
 }

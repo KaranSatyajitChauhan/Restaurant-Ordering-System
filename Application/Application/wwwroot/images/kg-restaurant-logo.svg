@@ -1,0 +1,18 @@
+﻿<svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Massive Plate/Circle Base -->
+    <circle cx="120" cy="120" r="110" fill="#2d3436" stroke="#6c5ce7" stroke-width="6" filter="url(#shadow)"/>
+   
+    
+    <!-- K G Text - now with perfect breathing room -->
+    <text x="120" y="130" font-family="'Poppins', sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#f5f6fa">
+        <tspan x="120" dy="0">K G</tspan>
+        <tspan x="120" dy="48" font-size="28" letter-spacing="4">RESTAURANT</tspan>
+    </text>
+  
+    <!-- Enhanced Shadow -->
+    <defs>
+        <filter id="shadow" x="-40" y="-40" width="320" height="320">
+            <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#6c5ce7" flood-opacity="0.4"/>
+        </filter>
+    </defs>
+</svg>
