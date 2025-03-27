@@ -1,0 +1,74 @@
+﻿@page
+@model ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<!-- HTML -->
+<div class="track-order-btn-container">
+    <!-- Edit Button -->
+    <button id="editBtn" class="track-order-btn">
+        <i class="fas fa-edit"></i>
+        <span>Edit Profile</span>
+    </button>
+</div>
+
+<!-- Example Text Fields -->
+<form class="auth-form">
+    <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full name">
+    </div>
+    <div class="form-group">
+        <label for="full">Email Address</label>
+        <input type="text" id="fullName" class="info-value" disabled>
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" class="info-value" disabled>
+    </div>
+</form>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById('editBtn').addEventListener('click', function() {
+        const btn = this;
+        const fields = document.querySelectorAll('.info-value');
+        const isEditing = btn.classList.toggle('editing');
+
+        // Toggle field disabled states
+        fields.forEach(field => field.disabled = !isEditing);
+
+        // Update button appearance
+        if (isEditing) {
+            btn.innerHTML = '<i class="fas fa-check"></i><span>Save Changes</span>';
+            btn.style.backgroundColor = 'var(--success)';
+        } else {
+            btn.innerHTML = '<i class="fas fa-edit"></i><span>Edit Profile</span>';
+            btn.style.backgroundColor = 'var(--primary)';
+
+            // Here you would typically save the data
+            console.log('Saving changes...');
+        }
+    });
+</script>
+
+<!-- Additional CSS -->
+<style>
+    /* Add to your existing styles */
+    .track-order-btn.editing {
+        background-color: var(--success) !important;
+    }
+
+    .info-value:disabled {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.7);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .info-value:not(:disabled) {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--primary);
+        color: var(--light);
+    }
+</style>
