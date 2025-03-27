@@ -235,3 +235,107 @@ body.auth-theme {
         padding-top: 60px;
     }
 }
+/* Track Order Button */
+.track-order-btn-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.track-order-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: var(--light);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+    .track-order-btn:hover {
+        background: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(253, 121, 168, 0.4);
+    }
+
+/* Add these styles at the end of your existing CSS file */
+
+/* Edit Button Styles (matches track-order-btn) */
+.edit-btn-container {
+    position: fixed;
+    top: 80px; /* Positioned below track order button */
+    right: 20px;
+    z-index: 1000;
+}
+
+.edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: var(--light);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+    .edit-btn:hover {
+        background: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(253, 121, 168, 0.4);
+    }
+
+    /* Edit Mode Styles */
+    .edit-btn.editing {
+        background-color: var(--success) !important;
+    }
+
+.info-value:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.info-value:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary);
+    color: var(--light);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .edit-btn-container {
+        top: 70px;
+        right: 15px;
+    }
+
+    .edit-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+.dropdown-menu.bg-dark {
+    background-color: #000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.hover-no-change {
+    transition: none !important;
+}
+
+    .hover-no-change:hover {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
