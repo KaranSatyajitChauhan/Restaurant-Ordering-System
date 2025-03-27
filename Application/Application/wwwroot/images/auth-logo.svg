@@ -1,0 +1,19 @@
+﻿<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<!-- Plate/Circle Base -->
+	<circle cx="60" cy="60" r="55" fill="#2d3436" stroke="#6c5ce7" stroke-width="3"/>
+
+	<!-- Utensils Design -->
+	<path d="M45 35L45 85" stroke="#fd79a8" stroke-width="4" stroke-linecap="round"/>
+	<path d="M40 40L50 30" stroke="#a29bfe" stroke-width="4" stroke-linecap="round"/>
+	<path d="M75 35L75 85" stroke="#fd79a8" stroke-width="4" stroke-linecap="round"/>
+	<path d="M70 40L80 30" stroke="#a29bfe" stroke-width="4" stroke-linecap="round"/>
+
+	<!-- K G Text -->
+	<text x="60" y="70" font-family="'Poppins', sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#f5f6fa">
+		<tspan x="60" dy="0">K G</tspan>
+		<tspan x="60" dy="24" font-size="16">RESTAURANT</tspan>
+	</text>
+
+	<!-- Decorative Steam Lines -->
+	<path d="M50 20Q55 15 60 20Q65 15 70 20" stroke="#6c5ce7" stroke-width="2" fill="none"/>
+</svg>

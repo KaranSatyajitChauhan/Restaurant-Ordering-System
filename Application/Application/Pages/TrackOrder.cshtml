@@ -1,0 +1,305 @@
+﻿@page
+@model Application.Pages.TrackOrderModel
+@{
+    ViewData["Title"] = "Track Your Order";
+}
+
+<div class="tracking-page bg-dark text-white">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow bg-dark text-white border-secondary">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="h4 mb-0">
+                            <i class="fas fa-map-marker-alt me-2"></i>Order Tracking
+                        </h2>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Tracking Form -->
+                        <form method="post" class="needs-validation" novalidate>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label asp-for="OrderId" class="form-label text-light">Order Number</label>
+                                    <input asp-for="OrderId" class="form-control bg-secondary border-dark text-white" placeholder="KG12345">
+                                    <span asp-validation-for="OrderId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Phone" class="form-label text-light">Phone Number</label>
+                                    <input asp-for="Phone" class="form-control bg-secondary border-dark text-white" placeholder="555-123-4567">
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="fas fa-search me-2"></i>Track Order
+                            </button>
+                        </form>
+
+                        <!-- Order Status Display -->
+                        @if (Model.Order != null)
+                        {
+                            <div class="order-status mt-5">
+                                <!-- Order Header -->
+                                <div class="order-header">
+                                    <h3 class="mb-3 text-white">Order #@Model.Order.Id</h3>
+                                    <span class="badge @Model.GetStatusBadgeClass(Model.Order.Status)">
+                                        <i class="@Model.GetStatusIcon(Model.Order.Status) me-1"></i>
+                                        @Model.Order.Status
+                                    </span>
+                                </div>
+
+                                <!-- Progress Tracker -->
+                                <div class="progress-tracker mb-5">
+                                    <div class="progress bg-dark">
+                                        <div class="progress-bar @Model.GetStatusBadgeClass(Model.Order.Status)"
+                                             style="width: @Model.GetProgressPercentage(Model.Order.Status)%">
+                                        </div>
+                                    </div>
+                                    <div class="steps">
+                                        @foreach (var status in Enum.GetValues(typeof(TrackOrderModel.OrderStatus)))
+                                        {
+                                            <div class="step @(Model.Order.Status >= (TrackOrderModel.OrderStatus)status ? "active" : "")">
+                                                <div class="step-icon">
+                                                    <i class="@Model.GetStatusIcon((TrackOrderModel.OrderStatus)status)"></i>
+                                                </div>
+                                                <div class="step-label">@status</div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Order Details Section -->
+                                <div class="order-details bg-gray-800 p-4 rounded mb-4">
+                                    <h4 class="text-white mb-3">Order Details</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="detail-row">
+                                                <span class="detail-label">Order Date:</span>
+                                                <span class="detail-value">@Model.Order.OrderDate.ToString("f")</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Estimated Delivery:</span>
+                                                <span class="detail-value">@Model.Order.EstimatedDelivery.ToString("f")</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="detail-row">
+                                                <span class="detail-label">Delivery Address:</span>
+                                                <span class="detail-value">@Model.Order.DeliveryAddress</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Payment Method:</span>
+                                                <span class="detail-value">@Model.Order.PaymentMethod</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Items -->
+                                <div class="order-items mb-4">
+                                    <h4 class="text-white mb-3">Your Order</h4>
+                                    <div class="list-group">
+                                        @foreach (var item in Model.Order.Items)
+                                        {
+                                            <div class="list-group-item bg-gray-800 border-dark">
+                                                <div class="d-flex gap-3 align-items-center">
+                                                    <div class="item-image position-relative">
+                                                        <img src="@Url.Content(item.ImageUrl ?? "/images/placeholder.jpg")"
+                                                             alt="@item.Name"
+                                                             class="rounded"
+                                                             width="80"
+                                                             onerror="this.onerror=null;this.src='/images/placeholder.jpg'">
+                                                        @if (item.IsVegetarian)
+                                                        {
+                                                            <span class="veg-badge position-absolute top-0 end-0">VEG</span>
+                                                        }
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1 text-white">@item.Name</h6>
+                                                        <small class="text-muted">@item.Quantity x @item.Price.ToString("C")</small>
+                                                        @if (!string.IsNullOrEmpty(item.SpecialInstructions))
+                                                        {
+                                                            <div class="mt-1">
+                                                                <small class="text-muted"><i>@item.SpecialInstructions</i></small>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="text-white">
+                                                        <strong>@((item.Quantity * item.Price).ToString("C"))</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Order Totals -->
+                                <div class="order-totals bg-gray-800 p-4 rounded">
+                                    <div class="row justify-content-end">
+                                        <div class="col-sm-8">
+                                            <div class="detail-row">
+                                                <span class="detail-label">Subtotal:</span>
+                                                <span class="detail-value">@Model.Order.Subtotal.ToString("C")</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Delivery Fee:</span>
+                                                <span class="detail-value">@Model.Order.DeliveryFee.ToString("C")</span>
+                                            </div>
+                                            <div class="detail-row">
+                                                <span class="detail-label">Tax:</span>
+                                                <span class="detail-value">@Model.Order.Tax.ToString("C")</span>
+                                            </div>
+                                            <div class="detail-row border-top border-secondary pt-2 mt-2">
+                                                <span class="detail-label fw-bold">Total:</span>
+                                                <span class="detail-value fw-bold">@Model.Order.Total.ToString("C")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.HasSearched)
+                        {
+                            <div class="alert alert-warning mt-4">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                No order found with the provided details. Please verify your order number and phone number.
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .tracking-page {
+            min-height: 100vh;
+            background-color: #121212;
+        }
+
+        .bg-gray-800 {
+            background-color: #1e1e1e;
+        }
+
+        .border-dark {
+            border-color: #333 !important;
+        }
+
+        .order-header {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2rem;
+        }
+
+        .progress-tracker {
+            margin: 2.5rem 0;
+            position: relative;
+        }
+
+        .progress {
+            height: 6px;
+            background-color: #333;
+            margin-bottom: 3rem;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            width: 100%;
+            top: 15px;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            color: #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+        }
+
+        .step.active .step-icon {
+            background-color: var(--bs-primary);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .step.active .step-label {
+            color: white;
+            font-weight: 500;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+            .detail-row:last-child {
+                border-bottom: none;
+            }
+
+        .detail-label {
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        .veg-badge {
+            background-color: #28a745;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .list-group-item {
+            transition: all 0.2s ease;
+        }
+
+            .list-group-item:hover {
+                background-color: #2a2a2a !important;
+            }
+
+        @@media (min-width: 768px) {
+            .order-header {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Auto-focus on order ID field when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('OrderId')?.focus();
+        });
+    </script>
+}
